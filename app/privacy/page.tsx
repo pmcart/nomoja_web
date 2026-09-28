@@ -38,7 +38,7 @@ export default function PrivacyPage() {
         The short version: we collect what you send us through the enquiry form, we use it to reply to you, and we don’t
         sell it or use it for anything else.
       </p>
-      <p className="mt-2 text-sm text-muted">Last updated 26 September 2026.</p>
+      <p className="mt-2 text-sm text-muted">Last updated 28 September 2026.</p>
 
       <Section title="Who we are">
         <p>
@@ -71,6 +71,20 @@ export default function PrivacyPage() {
           such as your IP address, browser type, the pages requested and the time, in server logs, in order to deliver
           the site and keep it secure.
         </p>
+        <p>
+          <strong className="font-medium text-ink">When you submit the enquiry form:</strong> the fields above are sent
+          directly to Formspree, the service that delivers your enquiry to us by email. Formspree stores submissions on
+          its own platform to do this; see their{" "}
+          <a
+            className="font-medium underline underline-offset-4"
+            href="https://formspree.io/legal/privacy-policy/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            privacy policy
+          </a>{" "}
+          for how they handle it.
+        </p>
       </Section>
 
       <Section title="Why we use it, and our legal basis">
@@ -86,10 +100,10 @@ export default function PrivacyPage() {
 
       <Section title="Who we share it with">
         <p>
-          Only service providers that help us run this site and handle email: our email delivery provider (currently
-          Resend) and our hosting provider. They process data on our instructions. Some are based outside the European
-          Economic Area; where that’s the case we rely on appropriate safeguards, such as the European Commission’s
-          Standard Contractual Clauses. We don’t sell your data.
+          Only service providers that help us run this site and handle enquiries: Formspree (form delivery) and GitHub
+          Pages (hosting). They process data on our instructions. Some are based outside the European Economic Area;
+          where that’s the case we rely on appropriate safeguards, such as the European Commission’s Standard
+          Contractual Clauses. We don’t sell your data.
         </p>
       </Section>
 

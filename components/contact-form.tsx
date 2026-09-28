@@ -15,6 +15,9 @@ import { ArrowRight, Check } from "./icons";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+// Static site: no server, so Formspree (https://formspree.io) receives and delivers enquiries.
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mppwkqjv";
+
 const EMPTY: ContactInput = { name: "", email: "", company: "", projectType: "", message: "" };
 const FIELD_ORDER: ContactField[] = ["name", "email", "company", "projectType", "message"];
 
@@ -36,17 +39,11 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
-  const startedAt = useRef(0);
 
   const [values, setValues] = useState<ContactInput>(EMPTY);
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [notice, setNotice] = useState("");
-
-  // When the form appeared. The server rejects submissions faster than a person can write.
-  useEffect(() => {
-    startedAt.current = Date.now();
-  }, []);
 
   useEffect(() => {
     if (status === "sent") successRef.current?.focus();
@@ -76,36 +73,30 @@ export function ContactForm() {
       return;
     }
 
+    // Honeypot: bots fill this field. Pretend success so they learn nothing; nothing is sent.
+    const honeypot = new FormData(event.currentTarget).get("website");
+    if (typeof honeypot === "string" && honeypot.trim() !== "") {
+      setStatus("sent");
+      return;
+    }
+
     setStatus("sending");
     setNotice("");
-    const honeypot = new FormData(event.currentTarget).get("website");
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...result.data, website: honeypot ?? "", startedAt: startedAt.current }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(result.data),
       });
-      const body: { ok?: boolean; error?: string; errors?: ContactErrors } = await res.json().catch(() => ({}));
 
-      if (res.ok && body.ok) {
+      if (res.ok) {
         setStatus("sent");
-        return;
-      }
-      if (res.status === 400 && body.errors) {
-        setErrors(body.errors);
-        setStatus("idle");
         return;
       }
 
       setStatus("error");
-      setNotice(
-        body.error === "too_fast"
-          ? "That was very quick. Please check your message and send it again."
-          : body.error === "rate_limited"
-            ? "You’ve sent a few messages in a short time. Please try again in a few minutes."
-            : "Something went wrong sending your message. Please try again in a moment.",
-      );
+      setNotice("Something went wrong sending your message. Please try again in a moment.");
     } catch {
       setStatus("error");
       setNotice("We couldn’t reach the server. Please check your connection and try again.");
