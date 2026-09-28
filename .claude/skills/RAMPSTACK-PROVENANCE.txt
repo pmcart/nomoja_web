@@ -1,0 +1,5 @@
+Source: https://github.com/rampstackco/claude-skills (MIT, see RAMPSTACK-LICENSE.txt)
+Commit: 3d4510a94a76ead80122c691b5c480f92f3fbe40
+Installed: 2026-09-26, 44 of 103 skills (website-relevant subset)
+Integrity: all 103 skills verified against upstream SKILLS.lock at install time
+To add more: copy skills/<name> from the upstream repo into this folder.
