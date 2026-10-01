@@ -18,8 +18,8 @@ export const site = {
   // Registered company details. Irish rules expect business websites to show these once
   // the company is registered, so fill them in when you have them. Empty values are hidden.
   company: {
-    legalName: "",
-    registrationNumber: "",
+    legalName: "Nomoja Limited",
+    registrationNumber: "827115",
     registeredOffice: "",
   },
 
